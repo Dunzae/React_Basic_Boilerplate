@@ -6,7 +6,7 @@ import {
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <div>Login Page</div>
+        element: <div className="text-3xl">Login Page</div>
 
     }
 ])
