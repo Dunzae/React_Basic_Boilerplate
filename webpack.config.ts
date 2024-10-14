@@ -1,5 +1,9 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import path from "path";
+import dotenv from "dotenv";
+import { DefinePlugin } from 'webpack';
+
+dotenv.config({ path: './.env.development' });
 
 module.exports = {
     mode: 'development',
@@ -13,12 +17,12 @@ module.exports = {
             // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
             { test: /\.tsx?$/, loader: "ts-loader" },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            { test: /\.js$/, loader: "source-map-loader" },
+            { test: /\.js?$/, loader: "source-map-loader" },
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                test: /\.css?$/,
+                use: ['style-loader', 'css-loader', "postcss-loader"],
             },
-            
+
         ],
     },
     resolve: {
@@ -28,6 +32,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './public/index.html',
         }),
+        new DefinePlugin({
+            "process.env" : JSON.stringify(process.env),
+        })
     ],
     devServer: {
         static: {
@@ -35,5 +42,6 @@ module.exports = {
         },
         hot: true,
         open: true,
+        historyApiFallback: true,
     },
-};
+}
